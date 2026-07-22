@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createTrip } from "../api/tripApi";
+import MapComponent from "../components/MapComponent";
+import { getCoordinates } from "../api/mapApi";
+import { getWeather } from "../api/weatherApi";
 
 function TripPlanner() {
 
@@ -12,6 +15,36 @@ function TripPlanner() {
   const [travelers, setTravelers] = useState("");
   const [travelMode, setTravelMode] = useState("");
   const [tripType, setTripType] = useState("");
+  const [mapCenter, setMapCenter] = useState([20, 0]);
+
+  const [sourceCoords, setSourceCoords] = useState(null);
+  const [destinationCoords, setDestinationCoords] = useState(null);
+  const [routeInfo, setRouteInfo] = useState({
+  distance: "",
+  time: "",
+});
+  const [weather, setWeather] = useState(null);
+  useEffect(() => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setMapCenter([
+          position.coords.latitude,
+          position.coords.longitude,
+        ]);
+      },
+      (error) => {
+        console.error("Location Error:", error);
+
+        // Default world view if permission denied
+        setMapCenter([20, 0]);
+      }
+    );
+  } else {
+    alert("Geolocation is not supported by this browser.");
+    setMapCenter([20, 0]);
+  }
+}, []);
 
   const handleSubmit = async (e) => {
   e.preventDefault();
@@ -59,7 +92,42 @@ function TripPlanner() {
 
   }
 };
+const showLocation = async () => {
+  try {
 
+    const src = await getCoordinates(source);
+    const dest = await getCoordinates(destination);
+
+    if (src.length === 0 || dest.length === 0) {
+      alert("Invalid source or destination");
+      return;
+    }
+
+    const weatherData = await getWeather(
+      parseFloat(dest[0].lat),
+      parseFloat(dest[0].lon)
+    );
+
+    setWeather(weatherData.current);
+
+    const sourceLocation = [
+      parseFloat(src[0].lat),
+      parseFloat(src[0].lon),
+    ];
+
+    const destinationLocation = [
+      parseFloat(dest[0].lat),
+      parseFloat(dest[0].lon),
+    ];
+
+    setSourceCoords(sourceLocation);
+    setDestinationCoords(destinationLocation);
+    setMapCenter(sourceLocation);
+
+  } catch (err) {
+    console.error(err);
+  }
+};
   return (
     <div className="container py-5">
 
@@ -104,6 +172,13 @@ function TripPlanner() {
                 required
               />
             </div>
+            <button
+              type="button"
+              className="btn btn-success mb-3"
+              onClick={showLocation}
+            >
+              📍 Show Source on Map
+            </button>
 
             {/* Destination */}
             <div className="mb-3">
@@ -261,6 +336,58 @@ function TripPlanner() {
             </button>
 
           </form>
+          <hr className="my-5" />
+
+              <h3 className="mb-3">
+              🗺 Travel Map
+              </h3>
+
+              <MapComponent
+                center={mapCenter}
+                sourceCoords={sourceCoords}
+                destinationCoords={destinationCoords}
+                setRouteInfo={setRouteInfo}
+              />
+              <div className="row mt-4">
+
+                <div className="col-md-6">
+                  <div className="card text-center shadow">
+                    <div className="card-body">
+                      <h5>📏 Distance</h5>
+                      <h3>{routeInfo.distance} KM</h3>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="card text-center shadow">
+                    <div className="card-body">
+                      <h5>⏱ Estimated Time</h5>
+                      <h3>{routeInfo.time}</h3>
+                    </div>
+                  </div>
+                </div>
+                {weather && (
+                <div className="card shadow mt-4">
+                  <div className="card-body text-center">
+
+                    <h4>🌦 Destination Weather</h4>
+
+                    <h2>{weather.temperature_2m}°C</h2>
+
+                    <p>
+                      💧 Humidity : {weather.relative_humidity_2m}%
+                    </p>
+
+                    <p>
+                      💨 Wind Speed : {weather.wind_speed_10m} km/h
+                    </p>
+
+                  </div>
+                </div>
+              )}
+
+              </div>
 
         </div>
 

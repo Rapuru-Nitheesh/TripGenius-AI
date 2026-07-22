@@ -1,6 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+import "leaflet-defaulticon-compatibility";
+import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 
 import "./index.css";
 
