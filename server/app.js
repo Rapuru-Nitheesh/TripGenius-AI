@@ -6,6 +6,7 @@ const locationRoutes = require("./routes/locationRoutes");
 const authRoutes = require("./routes/authRoutes");
 const tripRoutes = require("./routes/tripRoutes");
 const weatherRoutes = require("./routes/weatherRoutes");
+const placesRoutes = require("./routes/placesRoutes");
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/trips", tripRoutes);
 app.use("/api/location", locationRoutes);
 app.use("/api/weather", weatherRoutes);
+app.use("/api/places", placesRoutes);
 
 app.get("/", (req, res) => {
   res.send("🚀 TripGenius AI Backend is Running...");
