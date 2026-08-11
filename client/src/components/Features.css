@@ -1,0 +1,244 @@
+/* =========================================
+   FEATURES SECTION
+========================================= */
+
+.features-section {
+    width: 100%;
+}
+
+
+/* =========================================
+   SECTION TITLE
+========================================= */
+
+.features-title {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+
+    line-height: 1.2;
+}
+
+.features-subtitle {
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
+
+    margin-top: 10px;
+}
+
+
+/* =========================================
+   FEATURE CARD
+========================================= */
+
+.feature-card {
+    height: 100%;
+
+    border-radius: 15px;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+/* =========================================
+   CARD HOVER
+========================================= */
+
+.feature-card:hover {
+    transform: translateY(-6px);
+
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.15) !important;
+}
+
+
+/* =========================================
+   ICON
+========================================= */
+
+.feature-icon {
+    font-size: 3.5rem;
+
+    line-height: 1;
+
+    margin-bottom: 20px;
+}
+
+
+/* =========================================
+   CARD TITLE
+========================================= */
+
+.feature-title {
+    font-size: clamp(1.15rem, 2vw, 1.4rem);
+
+    font-weight: 600;
+
+    margin-bottom: 12px;
+}
+
+
+/* =========================================
+   DESCRIPTION
+========================================= */
+
+.feature-description {
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
+
+    line-height: 1.6;
+
+    max-width: 280px;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* =========================================
+   LARGE DESKTOP
+========================================= */
+
+@media (min-width: 1200px) {
+
+    .features-section {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .feature-card {
+        min-height: 240px;
+    }
+
+}
+
+
+/* =========================================
+   LAPTOP
+========================================= */
+
+@media (max-width: 1199px) {
+
+    .feature-icon {
+        font-size: 3.2rem;
+    }
+
+    .feature-card {
+        min-height: 220px;
+    }
+
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 991px) {
+
+    .features-title {
+        font-size: 2.1rem;
+    }
+
+    .feature-card {
+        min-height: 210px;
+    }
+
+    .feature-icon {
+        font-size: 3rem;
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+
+    .features-title {
+        font-size: 1.9rem;
+    }
+
+    .features-subtitle {
+        font-size: 1rem;
+
+        padding: 0 15px;
+    }
+
+    .feature-card {
+        min-height: auto;
+    }
+
+    .feature-icon {
+        font-size: 3rem;
+
+        margin-bottom: 18px;
+    }
+
+    .feature-title {
+        font-size: 1.2rem;
+    }
+
+    .feature-description {
+        font-size: 0.95rem;
+
+        max-width: 320px;
+    }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 575px) {
+
+    .features-title {
+        font-size: 1.7rem;
+    }
+
+    .features-subtitle {
+        font-size: 0.95rem;
+    }
+
+    .feature-card {
+        border-radius: 12px;
+    }
+
+    .feature-icon {
+        font-size: 2.8rem;
+    }
+
+    .feature-title {
+        font-size: 1.15rem;
+    }
+
+    .feature-description {
+        font-size: 0.9rem;
+
+        line-height: 1.55;
+    }
+
+}
+
+
+/* =========================================
+   VERY SMALL MOBILE
+========================================= */
+
+@media (max-width: 400px) {
+
+    .features-title {
+        font-size: 1.55rem;
+    }
+
+    .features-subtitle {
+        font-size: 0.9rem;
+    }
+
+    .feature-icon {
+        font-size: 2.6rem;
+    }
+
+}

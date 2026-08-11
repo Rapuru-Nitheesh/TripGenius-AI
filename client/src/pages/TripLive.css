@@ -1,0 +1,173 @@
+/* =========================================
+   TRIP LIVE
+========================================= */
+
+.triplive-page {
+    width: 100%;
+
+    min-height: 100vh;
+
+    overflow-x: hidden;
+}
+
+
+/* =========================================
+   TOP NAVIGATION
+========================================= */
+
+.triplive-navigation {
+    width: 100%;
+
+    position: relative;
+
+    z-index: 1000;
+}
+
+
+/* =========================================
+   MAIN LAYOUT
+========================================= */
+
+.triplive-layout {
+    width: 100%;
+
+    margin-left: 0;
+
+    margin-right: 0;
+}
+
+
+/* =========================================
+   MAP COLUMN
+========================================= */
+
+.triplive-map-column {
+    min-width: 0;
+
+    transition:
+        width 0.3s ease,
+        flex 0.3s ease;
+}
+
+
+/* =========================================
+   SIDE PANEL
+========================================= */
+
+.triplive-side-column {
+    min-width: 0;
+
+    margin-top: 0;
+}
+
+
+/* =========================================
+   LAPTOP
+========================================= */
+
+@media (max-width: 1199px) {
+
+    .triplive-page {
+        padding-left: 20px !important;
+
+        padding-right: 20px !important;
+    }
+
+    .triplive-layout {
+        margin-top: 15px !important;
+    }
+
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 991px) {
+
+    .triplive-page {
+        padding-left: 15px !important;
+
+        padding-right: 15px !important;
+    }
+
+
+    /*
+       On tablet the map and side panel
+       become vertically stacked.
+    */
+
+    .triplive-map-column {
+        width: 100%;
+    }
+
+    .triplive-side-column {
+        width: 100%;
+
+        margin-top: 15px;
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+
+    .triplive-page {
+        padding-top: 10px !important;
+
+        padding-left: 10px !important;
+
+        padding-right: 10px !important;
+    }
+
+
+    .triplive-layout {
+        margin-top: 10px !important;
+    }
+
+
+    .triplive-side-column {
+        margin-top: 10px;
+    }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 575px) {
+
+    .triplive-page {
+        padding-left: 6px !important;
+
+        padding-right: 6px !important;
+    }
+
+
+    .triplive-layout {
+        margin-top: 8px !important;
+    }
+
+}
+
+
+/* =========================================
+   VERY SMALL MOBILE
+========================================= */
+
+@media (max-width: 400px) {
+
+    .triplive-page {
+        padding-left: 4px !important;
+
+        padding-right: 4px !important;
+    }
+
+}

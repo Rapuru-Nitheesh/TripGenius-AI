@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import { registerUser } from "../api/authApi";
 
 function Register() {
@@ -8,6 +8,7 @@ function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [agree, setAgree] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
   e.preventDefault();
@@ -31,16 +32,21 @@ function Register() {
       password,
     });
 
-    alert(response.data.message);
+   alert("🎉 Registration Successful! Redirecting to Login...");
 
-    console.log(response.data);
+console.log(response.data);
 
-    // Clear the form
-    setFullName("");
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
-    setAgree(false);
+// Clear the form
+setFullName("");
+setEmail("");
+setPassword("");
+setConfirmPassword("");
+setAgree(false);
+
+// Redirect after 1.5 seconds
+setTimeout(() => {
+  navigate("/login", { replace: true });
+}, 500);
 
   } catch (error) {
     alert(error.response?.data?.message || "Registration failed");

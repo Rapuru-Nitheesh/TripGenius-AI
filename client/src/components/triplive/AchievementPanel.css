@@ -1,0 +1,283 @@
+/* =========================================
+   ACHIEVEMENT PANEL
+========================================= */
+
+.achievement-panel {
+    width: 100%;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.achievement-header {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+.achievement-title {
+    margin: 0;
+
+    font-size: 1.4rem;
+
+    line-height: 1.3;
+}
+
+
+/* =========================================
+   ADD BUTTON
+========================================= */
+
+.achievement-add-btn {
+    white-space: nowrap;
+
+    min-height: 42px;
+
+    padding: 8px 16px;
+}
+
+
+/* =========================================
+   ACHIEVEMENT CARD
+========================================= */
+
+.achievement-card {
+    width: 100%;
+
+    border: 0;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+.achievement-card-body {
+    padding: 18px;
+}
+
+.achievement-card h5 {
+    font-size: 1.1rem;
+
+    font-weight: 600;
+
+    word-break: break-word;
+}
+
+.achievement-card h6 {
+    font-size: 0.95rem;
+
+    word-break: break-word;
+}
+
+.achievement-card small {
+    font-size: 0.85rem;
+}
+
+.achievement-card p {
+    font-size: 0.95rem;
+
+    line-height: 1.6;
+
+    word-break: break-word;
+}
+
+
+/* =========================================
+   DELETE BUTTON
+========================================= */
+
+.achievement-card .btn-danger {
+    min-height: 35px;
+}
+
+
+/* =========================================
+   LAPTOP
+========================================= */
+
+@media (max-width: 1199px) {
+
+    .achievement-title {
+        font-size: 1.3rem;
+    }
+
+    .achievement-card-body {
+        padding: 16px;
+    }
+
+    .achievement-card h5 {
+        font-size: 1.05rem;
+    }
+
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 991px) {
+
+    .achievement-header {
+        gap: 10px;
+    }
+
+    .achievement-title {
+        font-size: 1.2rem;
+    }
+
+    .achievement-add-btn {
+        font-size: 0.9rem;
+
+        padding: 8px 13px;
+    }
+
+    .achievement-card-body {
+        padding: 15px;
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+
+    .achievement-header {
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 10px;
+    }
+
+    .achievement-title {
+        font-size: 1.15rem;
+
+        text-align: left;
+    }
+
+    .achievement-add-btn {
+        width: 100%;
+
+        font-size: 0.9rem;
+
+        padding: 10px;
+    }
+
+
+    .achievement-card {
+        border-radius: 8px;
+    }
+
+    .achievement-card-body {
+        padding: 14px;
+    }
+
+    .achievement-card h5 {
+        font-size: 1rem;
+    }
+
+    .achievement-card h6 {
+        font-size: 0.9rem;
+    }
+
+    .achievement-card small {
+        font-size: 0.8rem;
+    }
+
+    .achievement-card p {
+        font-size: 0.9rem;
+
+        line-height: 1.5;
+    }
+
+    .achievement-card .btn-danger {
+        width: 100%;
+
+        padding: 8px;
+    }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 575px) {
+
+    .achievement-title {
+        font-size: 1.05rem;
+    }
+
+    .achievement-add-btn {
+        font-size: 0.85rem;
+    }
+
+    .achievement-card-body {
+        padding: 12px;
+    }
+
+    .achievement-card h5 {
+        font-size: 0.95rem;
+    }
+
+    .achievement-card h6 {
+        font-size: 0.85rem;
+    }
+
+    .achievement-card p {
+        font-size: 0.85rem;
+    }
+
+}
+
+
+/* =========================================
+   VERY SMALL MOBILE
+========================================= */
+
+@media (max-width: 400px) {
+
+    .achievement-title {
+        font-size: 1rem;
+    }
+
+    .achievement-add-btn {
+        font-size: 0.82rem;
+
+        padding: 9px;
+    }
+
+    .achievement-card-body {
+        padding: 10px;
+    }
+
+    .achievement-card h5 {
+        font-size: 0.9rem;
+    }
+
+    .achievement-card h6 {
+        font-size: 0.8rem;
+    }
+
+    .achievement-card small {
+        font-size: 0.75rem;
+    }
+
+    .achievement-card p {
+        font-size: 0.82rem;
+    }
+
+}

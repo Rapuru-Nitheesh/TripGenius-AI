@@ -1,0 +1,63 @@
+.hero-section{
+
+padding:60px 0;
+
+}
+
+.hero-section button{
+
+transition:.3s;
+
+}
+
+.hero-section button:hover{
+
+transform:translateY(-3px);
+
+}
+
+@media(max-width:991px){
+
+.hero-section{
+
+text-align:center;
+
+min-height:85vh;
+
+padding:80px 20px;
+
+}
+
+.hero-section p{
+
+margin:auto;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.hero-section{
+
+min-height:80vh;
+
+}
+
+.hero-section .btn{
+
+width:100%;
+
+}
+
+}
+
+@media(max-width:576px){
+
+.hero-section{
+
+padding:70px 15px;
+
+}
+
+}

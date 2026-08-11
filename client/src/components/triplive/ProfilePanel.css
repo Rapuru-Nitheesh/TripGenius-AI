@@ -1,0 +1,230 @@
+/* =========================================
+   PROFILE PANEL
+========================================= */
+
+.profile-panel {
+    width: 100%;
+    max-width: 100%;
+}
+
+
+/* =========================================
+   PROFILE IMAGE
+========================================= */
+
+.profile-panel img {
+    max-width: 100%;
+}
+
+
+/* =========================================
+   PROFILE INFORMATION TABLE
+========================================= */
+
+.profile-panel .table {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.profile-panel .table th {
+    width: 35%;
+    white-space: nowrap;
+}
+
+.profile-panel .table td {
+    word-break: break-word;
+}
+
+
+/* =========================================
+   PROFILE ACTION BUTTONS
+========================================= */
+
+.profile-panel .d-grid {
+    width: 100%;
+}
+
+.profile-panel .d-grid .btn {
+    min-height: 44px;
+}
+
+
+/* =========================================
+   GALLERY / ACHIEVEMENTS
+========================================= */
+
+.profile-panel hr {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+
+/* =========================================
+   MODAL
+========================================= */
+
+.profile-panel-modal .modal-content {
+    border-radius: 14px;
+}
+
+
+/* =========================================
+   LAPTOP
+========================================= */
+
+@media (max-width: 1199px) {
+
+    .profile-panel .table th {
+        width: 32%;
+    }
+
+    .profile-panel .table td,
+    .profile-panel .table th {
+        font-size: 0.95rem;
+    }
+
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 991px) {
+
+    .profile-panel .table th {
+        width: 35%;
+    }
+
+    .profile-panel .table td,
+    .profile-panel .table th {
+        font-size: 0.93rem;
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+
+    .profile-panel .table {
+        font-size: 0.9rem;
+    }
+
+    .profile-panel .table th {
+        width: 38%;
+
+        white-space: normal;
+    }
+
+    .profile-panel .table td {
+        width: 62%;
+
+        word-break: break-word;
+    }
+
+
+    /* Profile image */
+
+    .profile-panel .profile-main-image {
+        width: 105px !important;
+
+        height: 105px !important;
+    }
+
+
+    /* Buttons */
+
+    .profile-panel .d-grid .btn {
+        width: 100%;
+
+        font-size: 0.92rem;
+
+        padding: 10px;
+    }
+
+
+    /* Gallery and achievements */
+
+    .profile-panel hr {
+        margin-top: 20px;
+
+        margin-bottom: 20px;
+    }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 575px) {
+
+    .profile-panel .table {
+        display: block;
+
+        width: 100%;
+
+        overflow-x: hidden;
+    }
+
+    .profile-panel .table tbody,
+    .profile-panel .table tr {
+        width: 100%;
+    }
+
+    .profile-panel .table th,
+    .profile-panel .table td {
+        font-size: 0.85rem;
+
+        padding: 9px 6px;
+    }
+
+    .profile-panel .table th {
+        width: 40%;
+    }
+
+    .profile-panel .table td {
+        width: 60%;
+    }
+
+
+    .profile-panel .profile-main-image {
+        width: 95px !important;
+
+        height: 95px !important;
+    }
+
+}
+
+
+/* =========================================
+   VERY SMALL MOBILE
+========================================= */
+
+@media (max-width: 400px) {
+
+    .profile-panel .table th,
+    .profile-panel .table td {
+        font-size: 0.8rem;
+
+        padding: 8px 4px;
+    }
+
+    .profile-panel .profile-main-image {
+        width: 90px !important;
+
+        height: 90px !important;
+    }
+
+    .profile-panel .d-grid .btn {
+        font-size: 0.85rem;
+
+        padding: 9px;
+    }
+
+}

@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import { getTrips, deleteTrip, updateTrip } from "../api/tripApi";
+import { useNavigate } from "react-router-dom";
+import "./TripHistory.css";
 
 function TripHistory() {
   const [trips, setTrips] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchTrips();
   }, []);
+
   const [showEdit, setShowEdit] = useState(false);
 
   const [editingTrip, setEditingTrip] = useState({
@@ -34,199 +38,315 @@ function TripHistory() {
       alert("Failed to Load Trips");
     }
   };
+
   const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this trip?"
+    );
 
-  const confirmDelete = window.confirm(
-    "Are you sure you want to delete this trip?"
-  );
+    if (!confirmDelete) return;
 
-  if (!confirmDelete) return;
+    try {
+      await deleteTrip(id);
 
-  try {
+      alert("Trip Deleted Successfully!");
 
-    await deleteTrip(id);
+      fetchTrips();
+    } catch (error) {
+      console.error(error);
 
-    alert("Trip Deleted Successfully!");
+      alert("Failed to Delete Trip");
+    }
+  };
 
-    fetchTrips();
-
-  } catch (error) {
-
-    console.error(error);
-
-    alert("Failed to Delete Trip");
-
-  }
-
-};
-const handleEdit = (trip) => {
-
-  setEditingTrip({
-    id: trip.id,
-    tripName: trip.trip_name,
-    source: trip.source,
-    destination: trip.destination,
-    startDate: trip.start_date.split("T")[0],
-    endDate: trip.end_date.split("T")[0],
-    budget: trip.budget,
-    travelers: trip.travelers,
-    travelMode: trip.travel_mode,
-    tripType: trip.trip_type,
-  });
-
-  setShowEdit(true);
-
-};
-const handleUpdate = async (e) => {
-  e.preventDefault();
-
-  try {
-    await updateTrip(editingTrip.id, {
-      tripName: editingTrip.tripName,
-      source: editingTrip.source,
-      destination: editingTrip.destination,
-      startDate: editingTrip.startDate,
-      endDate: editingTrip.endDate,
-      budget: editingTrip.budget,
-      travelers: editingTrip.travelers,
-      travelMode: editingTrip.travelMode,
-      tripType: editingTrip.tripType,
+  const handleEdit = (trip) => {
+    setEditingTrip({
+      id: trip.id,
+      tripName: trip.trip_name,
+      source: trip.source,
+      destination: trip.destination,
+      startDate: trip.start_date.split("T")[0],
+      endDate: trip.end_date.split("T")[0],
+      budget: trip.budget,
+      travelers: trip.travelers,
+      travelMode: trip.travel_mode,
+      tripType: trip.trip_type,
     });
 
-    alert("Trip Updated Successfully!");
+    setShowEdit(true);
+  };
 
-    setShowEdit(false);
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    if (
+  !editingTrip.startDate ||
+  !editingTrip.endDate
+) {
+  alert(
+    "Please select both start date and end date."
+  );
+  return;
+}
 
-    fetchTrips();
+if (
+  new Date(editingTrip.endDate) <
+  new Date(editingTrip.startDate)
+) {
+  alert(
+    "End date must be on or after the start date."
+  );
+  return;
+}
 
-  } catch (error) {
-    console.error(error);
-    alert("Failed to Update Trip");
-  }
-};
+    try {
+      await updateTrip(editingTrip.id, {
+        tripName: editingTrip.tripName,
+        source: editingTrip.source,
+        destination: editingTrip.destination,
+        startDate: editingTrip.startDate,
+        endDate: editingTrip.endDate,
+        budget: editingTrip.budget,
+        travelers: editingTrip.travelers,
+        travelMode: editingTrip.travelMode,
+        tripType: editingTrip.tripType,
+      });
 
+      alert("Trip Updated Successfully!");
+
+      setShowEdit(false);
+
+      fetchTrips();
+    } catch (error) {
+      console.error(error);
+
+      alert("Failed to Update Trip");
+    }
+  };
 
   return (
-    <div className="container py-5">
+    <div className="container py-5 trip-history-page">
 
-      <h2 className="text-center mb-4">
+      {/* =========================================
+          TITLE
+      ========================================= */}
+
+      <h2 className="text-center mb-4 trip-history-title">
         📋 My Trips
       </h2>
 
-      {
-        trips.length === 0 ? (
 
-          <div className="alert alert-info text-center">
-            No Trips Found
-          </div>
+      {/* =========================================
+          TRIPS
+      ========================================= */}
 
-        ) : (
+      {trips.length === 0 ? (
 
-          <div className="row">
+        <div className="alert alert-info text-center trip-empty">
+          No Trips Found
+        </div>
 
-            {
-              trips.map((trip) => (
+      ) : (
 
-                <div
-                  className="col-md-6 mb-4"
-                  key={trip.id}
-                >
+        <div className="row g-4">
 
-                  <div className="card shadow h-100">
+          {trips.map((trip) => (
 
-                    <div className="card-body">
+            <div
+              className="col-12 col-lg-6"
+              key={trip.id}
+            >
 
-                      <h4>
-                        ✈️ {trip.trip_name}
-                      </h4>
+              <div className="card shadow h-100 trip-card">
 
-                      <hr />
+                <div className="card-body">
 
-                      <p>
-                        <strong>📍 From:</strong> {trip.source}
-                      </p>
+                  {/* Trip Name */}
 
-                      <p>
-                        <strong>📍 To:</strong> {trip.destination}
-                      </p>
+                  <h4 className="trip-name">
+                    ✈️ {trip.trip_name}
+                  </h4>
 
-                      <p>
-                        <strong>📅 Start:</strong>{" "}
-                        {new Date(trip.start_date).toLocaleDateString()}
-                      </p>
+                  <hr />
 
-                      <p>
-                        <strong>📅 End:</strong>{" "}
-                        {new Date(trip.end_date).toLocaleDateString()}
-                      </p>
 
-                      <p>
-                        <strong>💰 Budget:</strong> ₹{trip.budget}
-                      </p>
+                  {/* Trip Details */}
 
-                      <p>
-                        <strong>👥 Travelers:</strong> {trip.travelers}
-                      </p>
+                  <div className="trip-details">
 
-                      <p>
-                        <strong>🚗 Travel Mode:</strong> {trip.travel_mode}
-                      </p>
+                    <p>
+                      <strong>📍 From:</strong>{" "}
+                      <span>{trip.source}</span>
+                    </p>
 
-                      <p>
-                        <strong>🏖 Trip Type:</strong> {trip.trip_type}
-                      </p>
+                    <p>
+                      <strong>📍 To:</strong>{" "}
+                      <span>{trip.destination}</span>
+                    </p>
 
-                      <p>
-                        <strong>Status:</strong>
+                    <p>
+                      <strong>📅 Start:</strong>{" "}
+                      <span>
+                        {new Date(
+                          trip.start_date
+                        ).toLocaleDateString()}
+                      </span>
+                    </p>
 
-                        <span className="badge bg-success ms-2">
-                          {trip.status}
-                        </span>
-                      </p>
-                      <hr />
+                    <p>
+                      <strong>📅 End:</strong>{" "}
+                      <span>
+                        {new Date(
+                          trip.end_date
+                        ).toLocaleDateString()}
+                      </span>
+                    </p>
 
-                        <div className="d-flex justify-content-between">
+                    <p>
+                      <strong>💰 Budget:</strong>{" "}
+                      <span>₹{trip.budget}</span>
+                    </p>
 
-                          <button
-                            className="btn btn-warning"
-                            onClick={() => handleEdit(trip)}
-                          >
-                            ✏️ Edit
-                          </button>
+                    <p>
+                      <strong>👥 Travelers:</strong>{" "}
+                      <span>{trip.travelers}</span>
+                    </p>
 
-                          <button
-                            className="btn btn-danger"
-                            onClick={() => handleDelete(trip.id)}
-                          >
-                            🗑 Delete
-                          </button>
+                    <p>
+                      <strong>🚗 Travel Mode:</strong>{" "}
+                      <span>{trip.travel_mode}</span>
+                    </p>
 
-                        </div>
+                    <p>
+                      <strong>🏖 Trip Type:</strong>{" "}
+                      <span>{trip.trip_type}</span>
+                    </p>
+
+                    <p>
+                      <strong>Status:</strong>
+
+                      <span className="badge bg-success ms-2">
+                        {trip.status}
+                      </span>
+                    </p>
+
+                  </div>
+
+                  <hr />
+
+
+                  {/* =========================================
+                      ACTION BUTTONS
+                  ========================================= */}
+
+                  <div className="trip-actions">
+
+                    <div className="trip-main-actions">
+
+                      <button
+                        className="btn btn-primary"
+                        onClick={() =>
+                          navigate("/trip-planner", {
+                            state: {
+                              trip,
+                              action: "route",
+                            },
+                          })
+                        }
+                      >
+                        🗺 View Map
+                      </button>
+
+
+                      <button
+                        className="btn btn-info text-white"
+                        onClick={() =>
+                          navigate("/trip-planner", {
+                            state: {
+                              trip,
+                              action: "ai",
+                            },
+                          })
+                        }
+                      >
+                        🤖 AI Plan
+                      </button>
+
+
+                      <button
+                        className="btn btn-success"
+                        onClick={() =>
+                          navigate("/trip-live", {
+                            state: {
+                              trip,
+                            },
+                          })
+                        }
+                      >
+                        ▶ Start Trip
+                      </button>
+
+                    </div>
+
+
+                    <div className="trip-secondary-actions">
+
+                      <button
+                        className="btn btn-warning"
+                        onClick={() => handleEdit(trip)}
+                      >
+                        ✏️ Edit
+                      </button>
+
+
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => handleDelete(trip.id)}
+                      >
+                        🗑 Delete
+                      </button>
+
                     </div>
 
                   </div>
 
                 </div>
 
-              ))
-            }
+              </div>
+
+            </div>
+
+          ))}
+
+        </div>
+
+      )}
 
 
-          </div>
+      {/* =========================================
+          EDIT TRIP
+      ========================================= */}
 
-        )
-      }
-     {showEdit && (
-        <div className="card mt-4 shadow p-4">
+      {showEdit && (
 
-          <h3 className="mb-4">✏️ Edit Trip</h3>
+        <div className="card mt-4 shadow p-4 edit-trip-card">
+
+          <h3 className="mb-4 edit-trip-title">
+            ✏️ Edit Trip
+          </h3>
+
 
           <form onSubmit={handleUpdate}>
 
             <div className="row">
 
-              <div className="col-md-6 mb-3">
-                <label className="form-label">Trip Name</label>
+              {/* Trip Name */}
+
+              <div className="col-12 col-md-6 mb-3">
+
+                <label className="form-label">
+                  Trip Name
+                </label>
+
                 <input
                   type="text"
                   className="form-control"
@@ -238,10 +358,18 @@ const handleUpdate = async (e) => {
                     })
                   }
                 />
+
               </div>
 
-              <div className="col-md-6 mb-3">
-                <label className="form-label">Source</label>
+
+              {/* Source */}
+
+              <div className="col-12 col-md-6 mb-3">
+
+                <label className="form-label">
+                  Source
+                </label>
+
                 <input
                   type="text"
                   className="form-control"
@@ -253,10 +381,18 @@ const handleUpdate = async (e) => {
                     })
                   }
                 />
+
               </div>
 
-              <div className="col-md-6 mb-3">
-                <label className="form-label">Destination</label>
+
+              {/* Destination */}
+
+              <div className="col-12 col-md-6 mb-3">
+
+                <label className="form-label">
+                  Destination
+                </label>
+
                 <input
                   type="text"
                   className="form-control"
@@ -268,38 +404,99 @@ const handleUpdate = async (e) => {
                     })
                   }
                 />
-              </div>
-              <div className="col-md-6 mb-3">
-                <label className="form-label">Start Date</label>
-                <input
-                  type="date"
-                  className="form-control"
-                  value={editingTrip.startDate}
-                  onChange={(e) =>
-                    setEditingTrip({
-                      ...editingTrip,
-                      startDate: e.target.value,
-                    })
-                  }
-                />
-              </div>
-              <div className="col-md-6 mb-3">
-                <label className="form-label">End Date</label>
-                <input
-                  type="date"
-                  className="form-control"
-                  value={editingTrip.endDate}
-                  onChange={(e) =>
-                    setEditingTrip({
-                      ...editingTrip,
-                      endDate: e.target.value,
-                    })
-                  }
-                />
+
               </div>
 
-              <div className="col-md-6 mb-3">
-                <label className="form-label">Budget</label>
+                {/* Start Date */}
+
+                <div className="col-12 col-md-6 mb-3">
+
+                  <label className="form-label">
+                    Start Date
+                  </label>
+
+                  <input
+                    type="date"
+                    className="form-control"
+                    value={editingTrip.startDate}
+                    max={editingTrip.endDate || undefined}
+                    onChange={(e) => {
+
+                      const newStartDate = e.target.value;
+
+                      // Check from Start Date side
+                      if (
+                        editingTrip.endDate &&
+                        new Date(newStartDate) >
+                          new Date(editingTrip.endDate)
+                      ) {
+
+                        alert(
+                          "Start date cannot be after the end date."
+                        );
+
+                        return;
+                      }
+
+                      setEditingTrip({
+                        ...editingTrip,
+                        startDate: newStartDate,
+                      });
+
+                    }}
+                  />
+
+                </div>
+
+
+                {/* End Date */}
+
+                <div className="col-12 col-md-6 mb-3">
+
+                  <label className="form-label">
+                    End Date
+                  </label>
+
+                  <input
+                    type="date"
+                    className="form-control"
+                    min={editingTrip.startDate || undefined}
+                    value={editingTrip.endDate}
+                    onChange={(e) => {
+
+                      const newEndDate = e.target.value;
+
+                      // Check from End Date side
+                      if (
+                        editingTrip.startDate &&
+                        new Date(newEndDate) <
+                          new Date(editingTrip.startDate)
+                      ) {
+
+                        alert(
+                          "End date cannot be before the start date."
+                        );
+
+                        return;
+                      }
+
+                      setEditingTrip({
+                        ...editingTrip,
+                        endDate: newEndDate,
+                      });
+
+                    }}
+                  />
+
+                </div>
+              {/* Budget */}
+
+              <div className="col-12 col-md-6 mb-3">
+
+                <label className="form-label">
+                  Budget
+                </label>
+
                 <input
                   type="number"
                   className="form-control"
@@ -311,10 +508,18 @@ const handleUpdate = async (e) => {
                     })
                   }
                 />
+
               </div>
 
-              <div className="col-md-6 mb-3">
-                <label className="form-label">Travelers</label>
+
+              {/* Travelers */}
+
+              <div className="col-12 col-md-6 mb-3">
+
+                <label className="form-label">
+                  Travelers
+                </label>
+
                 <input
                   type="number"
                   className="form-control"
@@ -326,10 +531,18 @@ const handleUpdate = async (e) => {
                     })
                   }
                 />
+
               </div>
 
-              <div className="col-md-6 mb-3">
-                <label className="form-label">Travel Mode</label>
+
+              {/* Travel Mode */}
+
+              <div className="col-12 col-md-6 mb-3">
+
+                <label className="form-label">
+                  Travel Mode
+                </label>
+
                 <select
                   className="form-select"
                   value={editingTrip.travelMode}
@@ -346,10 +559,18 @@ const handleUpdate = async (e) => {
                   <option>Flight</option>
                   <option>Bike</option>
                 </select>
+
               </div>
 
-              <div className="col-md-6 mb-3">
-                <label className="form-label">Trip Type</label>
+
+              {/* Trip Type */}
+
+              <div className="col-12 col-md-6 mb-3">
+
+                <label className="form-label">
+                  Trip Type
+                </label>
+
                 <select
                   className="form-select"
                   value={editingTrip.tripType}
@@ -366,28 +587,38 @@ const handleUpdate = async (e) => {
                   <option>Business</option>
                   <option>Adventure</option>
                 </select>
+
               </div>
 
             </div>
 
-            <button
-              type="button"
-              className="btn btn-secondary me-2"
-              onClick={() => setShowEdit(false)}
-            >
-              Cancel
-            </button>
 
-            <button
-              type="submit"
-              className="btn btn-primary"
-            >
-              Save Changes
-            </button>
+            {/* Edit Buttons */}
+
+            <div className="edit-buttons">
+
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => setShowEdit(false)}
+              >
+                Cancel
+              </button>
+
+
+              <button
+                type="submit"
+                className="btn btn-primary"
+              >
+                Save Changes
+              </button>
+
+            </div>
 
           </form>
 
         </div>
+
       )}
 
     </div>

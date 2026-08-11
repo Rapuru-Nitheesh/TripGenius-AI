@@ -1,0 +1,460 @@
+/* =========================================
+   DASHBOARD
+========================================= */
+
+.dashboard {
+    width: 100%;
+
+    min-height: calc(100vh - 72px);
+
+    background-size: cover;
+
+    background-position: center;
+
+    background-repeat: no-repeat;
+
+    position: relative;
+
+    overflow: hidden;
+
+    transition: background-image 0.5s ease;
+}
+
+
+/* =========================================
+   OVERLAY
+========================================= */
+
+.overlay {
+    width: 100%;
+
+    min-height: calc(100vh - 72px);
+
+    background: rgba(0, 0, 0, 0.55);
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    padding: 40px 20px;
+}
+
+
+/* =========================================
+   HERO CONTENT
+========================================= */
+
+.hero-content {
+
+    color: white;
+
+    width: 70%;
+
+    max-width: 1000px;
+
+    animation: fadeIn 1.2s ease;
+
+}
+
+
+/* =========================================
+   WELCOME
+========================================= */
+
+.welcome {
+
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+
+    margin-bottom: 20px;
+
+    font-weight: 500;
+
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.title {
+
+    font-size: clamp(2.3rem, 6vw, 4.2rem);
+
+    font-weight: bold;
+
+    line-height: 1.15;
+
+    margin-bottom: 25px;
+
+}
+
+
+/* =========================================
+   SUBTITLE
+========================================= */
+
+.subtitle {
+
+    font-size: clamp(1rem, 2vw, 1.35rem);
+
+    line-height: 1.8;
+
+    max-width: 850px;
+
+    margin: 0 auto 40px;
+
+}
+
+
+/* =========================================
+   PLAN BUTTON
+========================================= */
+
+.plan-btn {
+
+    padding: 16px 42px;
+
+    border: none;
+
+    border-radius: 50px;
+
+    font-size: clamp(1rem, 2vw, 1.25rem);
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    background: #0d6efd;
+
+    color: white;
+
+    transition: 0.3s ease;
+
+}
+
+
+/* =========================================
+   BUTTON HOVER
+========================================= */
+
+.plan-btn:hover {
+
+    transform: translateY(-5px);
+
+    background: #0b5ed7;
+
+    box-shadow:
+        0 10px 30px
+        rgba(13, 110, 253, 0.5);
+
+}
+
+
+/* =========================================
+   LARGE DESKTOP
+========================================= */
+
+@media (min-width: 1400px) {
+
+    .dashboard,
+    .overlay {
+
+        min-height: calc(100vh - 72px);
+
+    }
+
+    .hero-content {
+
+        width: 70%;
+
+        max-width: 1100px;
+
+    }
+
+}
+
+
+/* =========================================
+   LAPTOP
+========================================= */
+
+@media (max-width: 1199px) {
+
+    .dashboard,
+    .overlay {
+
+        min-height: calc(100vh - 68px);
+
+    }
+
+    .hero-content {
+
+        width: 80%;
+
+    }
+
+    .subtitle {
+
+        max-width: 750px;
+
+    }
+
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 991px) {
+
+    .dashboard,
+    .overlay {
+
+        min-height: calc(100vh - 68px);
+
+    }
+
+    .overlay {
+
+        padding: 35px 25px;
+
+    }
+
+    .hero-content {
+
+        width: 90%;
+
+    }
+
+    .welcome {
+
+        margin-bottom: 15px;
+
+    }
+
+    .title {
+
+        margin-bottom: 20px;
+
+    }
+
+    .subtitle {
+
+        line-height: 1.7;
+
+        margin-bottom: 30px;
+
+    }
+
+    .plan-btn {
+
+        padding: 15px 36px;
+
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+
+    .dashboard,
+    .overlay {
+
+        min-height: calc(100vh - 64px);
+
+    }
+
+    .dashboard {
+
+        background-position: center;
+
+    }
+
+    .overlay {
+
+        padding: 30px 18px;
+
+    }
+
+    .hero-content {
+
+        width: 100%;
+
+        max-width: 600px;
+
+    }
+
+    .welcome {
+
+        font-size: 1.05rem;
+
+        margin-bottom: 15px;
+
+    }
+
+    .title {
+
+        font-size: clamp(
+            2rem,
+            9vw,
+            3rem
+        );
+
+        margin-bottom: 20px;
+
+    }
+
+    .subtitle {
+
+        font-size: 0.98rem;
+
+        line-height: 1.65;
+
+        margin-bottom: 30px;
+
+    }
+
+    .plan-btn {
+
+        width: 100%;
+
+        max-width: 320px;
+
+        padding: 14px 25px;
+
+        font-size: 1rem;
+
+    }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 575px) {
+
+    .dashboard,
+    .overlay {
+
+        min-height: calc(100vh - 64px);
+
+    }
+
+    .overlay {
+
+        padding: 25px 15px;
+
+    }
+
+    .welcome {
+
+        font-size: 0.95rem;
+
+    }
+
+    .title {
+
+        font-size: 2rem;
+
+        line-height: 1.2;
+
+    }
+
+    .subtitle {
+
+        font-size: 0.92rem;
+
+        line-height: 1.6;
+
+        margin-bottom: 25px;
+
+    }
+
+    .plan-btn {
+
+        max-width: 100%;
+
+        font-size: 0.95rem;
+
+        padding: 13px 20px;
+
+    }
+
+}
+
+
+/* =========================================
+   VERY SMALL MOBILE
+========================================= */
+
+@media (max-width: 400px) {
+
+    .overlay {
+
+        padding: 20px 12px;
+
+    }
+
+    .welcome {
+
+        font-size: 0.9rem;
+
+    }
+
+    .title {
+
+        font-size: 1.75rem;
+
+    }
+
+    .subtitle {
+
+        font-size: 0.88rem;
+
+    }
+
+    .plan-btn {
+
+        font-size: 0.9rem;
+
+        padding: 12px 18px;
+
+    }
+
+}
+
+
+/* =========================================
+   ANIMATION
+========================================= */
+
+@keyframes fadeIn {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(40px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}

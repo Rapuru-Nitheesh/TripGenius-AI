@@ -4,6 +4,8 @@ import { BrowserRouter } from "react-router-dom";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import "./styles/home.css";
 
 import "./index.css";
 

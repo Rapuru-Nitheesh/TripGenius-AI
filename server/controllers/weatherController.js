@@ -18,9 +18,12 @@ const getWeather = async (req, res) => {
           longitude: lon,
           current: [
             "temperature_2m",
+            "apparent_temperature",
             "relative_humidity_2m",
             "wind_speed_10m",
             "weather_code",
+            "precipitation",
+            "is_day"
           ],
         },
       }

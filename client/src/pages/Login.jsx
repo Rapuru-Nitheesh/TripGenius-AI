@@ -27,7 +27,7 @@ function Login() {
 
       alert("Login Successful!");
 
-      navigate("/dashboard");
+      navigate("/dashboard", { replace: true });
 
     } catch (error) {
       alert(

@@ -1,0 +1,363 @@
+/* =========================================
+   TRIP HISTORY
+========================================= */
+
+.trip-history-page {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.trip-history-title {
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+}
+
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.trip-empty {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+
+/* =========================================
+   TRIP CARD
+========================================= */
+
+.trip-card {
+    border: none;
+    border-radius: 14px;
+
+    transition: transform 0.25s ease,
+                box-shadow 0.25s ease;
+}
+
+.trip-card:hover {
+    transform: translateY(-3px);
+}
+
+
+/* =========================================
+   TRIP NAME
+========================================= */
+
+.trip-name {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================
+   TRIP DETAILS
+========================================= */
+
+.trip-details p {
+    margin-bottom: 10px;
+
+    line-height: 1.6;
+
+    overflow-wrap: anywhere;
+}
+
+.trip-details strong {
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.trip-actions {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+/* Main buttons */
+
+.trip-main-actions {
+    display: flex;
+
+    gap: 10px;
+
+    width: 100%;
+}
+
+.trip-main-actions .btn {
+    flex: 1;
+}
+
+
+/* Edit/Delete */
+
+.trip-secondary-actions {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+.trip-secondary-actions .btn {
+    flex: 1;
+}
+
+
+/* =========================================
+   EDIT CARD
+========================================= */
+
+.edit-trip-card {
+    border: none;
+
+    border-radius: 14px;
+}
+
+.edit-trip-title {
+    font-size: clamp(1.3rem, 3vw, 1.7rem);
+}
+
+
+/* =========================================
+   EDIT BUTTONS
+========================================= */
+
+.edit-buttons {
+    display: flex;
+
+    gap: 10px;
+
+    justify-content: flex-start;
+
+    flex-wrap: wrap;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 991px) {
+
+    .trip-history-page {
+        padding-top: 35px !important;
+        padding-bottom: 40px !important;
+    }
+
+    .trip-card .card-body {
+        padding: 20px;
+    }
+
+    .trip-main-actions {
+        flex-wrap: wrap;
+    }
+
+    .trip-main-actions .btn {
+        flex: 1 1 calc(50% - 10px);
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+
+    .trip-history-page {
+        padding-top: 25px !important;
+        padding-bottom: 30px !important;
+
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+
+    .trip-history-title {
+        font-size: 1.65rem;
+
+        margin-bottom: 25px !important;
+    }
+
+
+    .trip-card {
+        border-radius: 10px;
+    }
+
+
+    .trip-card .card-body {
+        padding: 18px;
+    }
+
+
+    .trip-name {
+        font-size: 1.2rem;
+    }
+
+
+    .trip-details p {
+        font-size: 0.93rem;
+
+        margin-bottom: 9px;
+    }
+
+
+    /* Main actions become vertical */
+
+    .trip-main-actions {
+        flex-direction: column;
+
+        gap: 9px;
+    }
+
+    .trip-main-actions .btn {
+        width: 100%;
+
+        flex: none;
+    }
+
+
+    /* Edit/Delete */
+
+    .trip-secondary-actions {
+        gap: 9px;
+    }
+
+    .trip-secondary-actions .btn {
+        width: 50%;
+
+        flex: 1;
+
+        font-size: 0.9rem;
+    }
+
+
+    /* Edit form */
+
+    .edit-trip-card {
+        padding: 18px !important;
+
+        margin-top: 25px !important;
+    }
+
+    .edit-buttons {
+        flex-direction: column;
+    }
+
+    .edit-buttons .btn {
+        width: 100%;
+    }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 575px) {
+
+    .trip-history-page {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+
+    .trip-history-title {
+        font-size: 1.5rem;
+    }
+
+
+    .trip-card .card-body {
+        padding: 15px;
+    }
+
+
+    .trip-name {
+        font-size: 1.1rem;
+    }
+
+
+    .trip-details p {
+        font-size: 0.88rem;
+
+        line-height: 1.55;
+    }
+
+
+    .trip-details strong {
+        display: inline;
+    }
+
+
+    .trip-secondary-actions .btn {
+        font-size: 0.85rem;
+
+        padding: 9px 8px;
+    }
+
+
+    .edit-trip-card {
+        padding: 15px !important;
+    }
+
+
+    .edit-trip-card .form-label {
+        font-size: 0.9rem;
+    }
+
+
+    .edit-trip-card .form-control,
+    .edit-trip-card .form-select {
+        font-size: 0.9rem;
+    }
+
+}
+
+
+/* =========================================
+   VERY SMALL MOBILE
+========================================= */
+
+@media (max-width: 400px) {
+
+    .trip-history-page {
+        padding-left: 7px;
+        padding-right: 7px;
+    }
+
+
+    .trip-history-title {
+        font-size: 1.35rem;
+    }
+
+
+    .trip-card .card-body {
+        padding: 13px;
+    }
+
+
+    .trip-details p {
+        font-size: 0.84rem;
+    }
+
+
+    .trip-main-actions .btn,
+    .trip-secondary-actions .btn {
+        font-size: 0.82rem;
+    }
+
+}

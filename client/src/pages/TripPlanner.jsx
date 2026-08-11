@@ -4,6 +4,11 @@
   import { getCoordinates } from "../api/mapApi";
   import { getWeather } from "../api/weatherApi";
   import { getNearbyPlaces } from "../api/placesApi";
+  import AIPlanner from "../components/AIPlanner";
+  import { useLocation } from "react-router-dom";
+  import { loadTripMap } from "../services/tripMapService";
+  import "./TripPlanner.css";
+  import Form from "react-bootstrap/Form";
 
   function TripPlanner() {
 
@@ -29,6 +34,21 @@
     const [selectedHotel, setSelectedHotel] = useState(null);
     const [restaurants, setRestaurants] = useState([]);
     const [tourists, setTourists] = useState([]);
+    const [activeFeature, setActiveFeature] = useState("");
+    const [loadingRoute,setLoadingRoute]=useState(false);
+    const [lastSource, setLastSource] = useState("");
+    const [lastDestination, setLastDestination] = useState("");   
+    const location = useLocation();
+
+    const trip = location.state?.trip;
+    const action = location.state?.action; 
+    useEffect(() => {
+
+    if (!trip || action !== "ai") return;
+
+    setActiveFeature("ai");
+
+}, [trip, action]);     
 
     useEffect(() => {
     if (navigator.geolocation) {
@@ -54,6 +74,15 @@
 
     const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!startDate || !endDate) {
+    alert("Please select both start date and end date.");
+    return;
+  }
+
+  if (new Date(endDate) < new Date(startDate)) {
+    alert("End date must be on or after the start date.");
+    return;
+  }
 
     try {
 
@@ -98,76 +127,103 @@
 
     }
   };
-  const showLocation = async () => {
-    try {
+  useEffect(() => {
 
-      const src = await getCoordinates(source);
-      const dest = await getCoordinates(destination);
+  if (!trip) return;
 
-      if (src.length === 0 || dest.length === 0) {
-        alert("Invalid source or destination");
-        return;
-      }
+  setTripName(trip.trip_name);
+  setSource(trip.source);
+  setDestination(trip.destination);
+  setStartDate(trip.start_date.split("T")[0]);
+  setEndDate(trip.end_date.split("T")[0]);
+  setBudget(trip.budget);
+  setTravelers(trip.travelers);
+  setTravelMode(trip.travel_mode);
+  setTripType(trip.trip_type);
 
-      const weatherData = await getWeather(
-        parseFloat(dest[0].lat),
-        parseFloat(dest[0].lon)
-      );
+}, [trip]);
+useEffect(() => {
 
-      setWeather(weatherData.current);
-      const hotelData = await getNearbyPlaces(
-      parseFloat(dest[0].lat),
-      parseFloat(dest[0].lon),
-      "hotel" 
-  );
-  console.log(hotelData);
+  if (!action) return;
 
-  setHotels(hotelData);
-  const restaurantData = await getNearbyPlaces(
-  parseFloat(dest[0].lat),
-  parseFloat(dest[0].lon),
-  "restaurant"
-);
+  if (!source || !destination) return;
 
-setRestaurants(restaurantData);
-const touristData = await getNearbyPlaces(
-  parseFloat(dest[0].lat),
-  parseFloat(dest[0].lon),
-  "tourist"
-);
+  const openFeature = async () => {
 
-setTourists(touristData);
+    await showLocation();
 
-      const sourceLocation = [
-        parseFloat(src[0].lat),
-        parseFloat(src[0].lon),
-      ];
+    setActiveFeature(action);
 
-      const destinationLocation = [
-        parseFloat(dest[0].lat),
-        parseFloat(dest[0].lon),
-      ];
-
-      setSourceCoords(sourceLocation);
-      setDestinationCoords(destinationLocation);
-      setMapCenter(sourceLocation);
-
-    } catch (err) {
-      console.error(err);
-    }
   };
-    return (
-      <div className="container py-5">
 
-        <div className="card shadow-lg">
+  openFeature();
+
+}, [source, destination]);
+const showLocation = async () => {
+  try {
+
+    setLoadingRoute(true);
+
+    const data = await loadTripMap(source, destination);
+
+    setSourceCoords(data.sourceCoords);
+    setDestinationCoords(data.destinationCoords);
+    setMapCenter(data.mapCenter);
+
+    setWeather(data.weather);
+
+    setHotels(data.hotels);
+    setRestaurants(data.restaurants);
+    setTourists(data.tourists);
+
+  } catch (err) {
+
+    console.error(err);
+
+    alert("Failed to load route.");
+
+  } finally {
+
+    setLoadingRoute(false);
+
+  }
+};
+const getWeatherIcon = (code) => {
+
+  if ([0].includes(code)) return "☀️";
+
+  if ([1, 2].includes(code)) return "🌤️";
+
+  if ([3].includes(code)) return "☁️";
+
+  if ([45, 48].includes(code)) return "🌫️";
+
+  if ([51,53,55,61,63,65,80,81,82].includes(code))
+    return "🌧️";
+
+  if ([71,73,75,85,86].includes(code))
+    return "❄️";
+
+  if ([95,96,99].includes(code))
+    return "⛈️";
+
+  return "🌤️";
+};
+    return (
+      <div className="container trip-planner-page py-5">
+
+        <div className="card shadow-lg trip-planner-card">
 
           <div className="card-body">
 
-            <h2 className="text-center mb-4">
+            <h2 className="text-center mb-4 trip-planner-title">
               ✈️ Create New Trip
             </h2>
 
-            <form onSubmit={handleSubmit}>
+            <form
+              onSubmit={handleSubmit}
+              className="trip-planner-form"
+            >
 
               {/* Trip Name */}
               <div className="mb-3">
@@ -200,13 +256,6 @@ setTourists(touristData);
                   required
                 />
               </div>
-              <button
-                type="button"
-                className="btn btn-success mb-3"
-                onClick={showLocation}
-              >
-                📍 Show Source on Map
-              </button>
 
               {/* Destination */}
               <div className="mb-3">
@@ -224,43 +273,82 @@ setTourists(touristData);
                 />
               </div>
 
-              {/* Dates */}
-              <div className="row">
+                    {/* Dates */}
 
-                <div className="col-md-6 mb-3">
+                    {/* Start Date */}
 
-                  <label className="form-label">
-                    Start Date
-                  </label>
+                    <Form.Group className="mb-3">
 
-                  <input
-                    type="date"
-                    className="form-control"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                    required
-                  />
+                      <Form.Label>
+                        Start Date
+                      </Form.Label>
 
-                </div>
+                      <Form.Control
+                        type="date"
+                        value={startDate}
+                        max={endDate || undefined}
+                        onChange={(e) => {
 
-                <div className="col-md-6 mb-3">
+                          const newStartDate = e.target.value;
 
-                  <label className="form-label">
-                    End Date
-                  </label>
+                          // Check from Start Date side
+                          if (
+                            endDate &&
+                            new Date(newStartDate) >
+                              new Date(endDate)
+                          ) {
 
-                  <input
-                    type="date"
-                    className="form-control"
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    required
-                  />
+                            alert(
+                              "Start date cannot be after the end date."
+                            );
 
-                </div>
+                            return;
+                          }
 
-              </div>
+                          setStartDate(newStartDate);
 
+                        }}
+                      />
+
+                    </Form.Group>
+
+
+                    {/* End Date */}
+
+                    <Form.Group className="mb-3">
+
+                      <Form.Label>
+                        End Date
+                      </Form.Label>
+
+                      <Form.Control
+                        type="date"
+                        min={startDate || undefined}
+                        value={endDate}
+                        onChange={(e) => {
+
+                          const newEndDate = e.target.value;
+
+                          // Check from End Date side
+                          if (
+                            startDate &&
+                            new Date(newEndDate) <
+                              new Date(startDate)
+                          ) {
+
+                            alert(
+                              "End date cannot be before the start date."
+                            );
+
+                            return;
+                          }
+
+                          setEndDate(newEndDate);
+
+                        }}
+                      />
+
+                    </Form.Group>
               {/* Budget & Travelers */}
               <div className="row">
 
@@ -356,175 +444,302 @@ setTourists(touristData);
 
               </div>
 
-              <button
-                type="submit"
-                className="btn btn-primary w-100"
-              >
-                Create Trip
-              </button>
+              <div className="trip-actions">
+
+                <button
+                  type="submit"
+                  className="btn btn-primary px-4"
+                >
+                  ✈️ Create Trip
+                </button>
+
+                <button
+                  type="button"
+                  className={`btn ${
+                    activeFeature === "route"
+                      ? "btn-success"
+                      : "btn-outline-success"
+                  } px-4`}
+                  onClick={async () => {
+
+                    if (!source || !destination) {
+                      alert("Please enter Source and Destination");
+                      return;
+                    }
+
+                    // Load data only once
+                    if ( source !== lastSource ||
+                          destination !== lastDestination) {
+                      await showLocation();
+                      setLastSource(source);
+                      setLastDestination(destination);
+                    }
+
+                    setActiveFeature("route");
+                  }}
+                >
+                  {loadingRoute ? "Loading..." : "🗺 Show Route"}
+                </button>
+
+                <button
+                  type="button"
+                  className={`btn ${
+                    activeFeature === "ai"
+                      ? "btn-warning"
+                      : "btn-outline-warning"
+                  } px-4`}
+                  onClick={() => setActiveFeature("ai")}
+                >
+                  🤖 Plan with AI
+                </button>
+
+                <button
+                  type="button"
+                  className={`btn ${
+                    activeFeature === "weather"
+                      ? "btn-info text-white"
+                      : "btn-outline-info"
+                  } px-4`}
+                  onClick={async () => {
+
+                    if (!source || !destination) {
+                      alert("Please enter Source and Destination");
+                      return;
+                    }
+
+                    // Load data only once
+                    if (source !== lastSource ||
+                        destination !== lastDestination) {
+                      await showLocation();
+                      setLastSource(source);
+                      setLastDestination(destination);
+                    }
+
+                    setActiveFeature("weather");
+                  }}
+                >
+                  🌦️ Weather
+                </button>
+
+              </div>
 
             </form>
             <hr className="my-5" />
-
-                <h3 className="mb-3">
-                🗺 Travel Map
-                </h3>
-
-                <MapComponent
-                  center={mapCenter}
-                  sourceCoords={sourceCoords}
-                  destinationCoords={destinationCoords}
-                  setRouteInfo={setRouteInfo}
-                  selectedHotel={selectedHotel}
-                  hotels={hotels}
-                  restaurants={restaurants}
-                  tourists={tourists}
-                />
-                <div className="row mt-4">
-
-                  <div className="col-md-6">
-                    <div className="card text-center shadow">
+                <div className="trip-result-area"></div>
+                  {activeFeature === "route" && (
+                  <>
+                    <div className="card shadow mt-4">
                       <div className="card-body">
-                        <h5>📏 Distance</h5>
-                        <h3>{routeInfo.distance} KM</h3>
+
+                        <h3 className="mb-3">🗺 Travel Route</h3>
+                        <div className="trip-map-container"></div>
+
+                        <MapComponent
+                          center={mapCenter}
+                          sourceCoords={sourceCoords}
+                          destinationCoords={destinationCoords}
+                          setRouteInfo={setRouteInfo}
+                          selectedHotel={selectedHotel}
+                          hotels={hotels}
+                          restaurants={restaurants}
+                          tourists={tourists}
+                        />
+
                       </div>
                     </div>
-                  </div>
 
-                  <div className="col-md-6">
-                    <div className="card text-center shadow">
-                      <div className="card-body">
-                        <h5>⏱ Estimated Time</h5>
-                        <h3>{routeInfo.time}</h3>
-                      </div>
-                    </div>
-                  </div>
-                  {weather && (
-                  <div className="card shadow mt-4">
-                    <div className="card-body text-center">
+                   <div className="row mt-4">
 
-                      <h4>🌦 Destination Weather</h4>
-
-                      <h2>{weather.temperature_2m}°C</h2>
-
-                      <p>
-                        💧 Humidity : {weather.relative_humidity_2m}%
-                      </p>
-
-                      <p>
-                        💨 Wind Speed : {weather.wind_speed_10m} km/h
-                      </p>
-
-                    </div>
-                  </div>
-                )}
-                <div className="card shadow mt-4">
-                  <div className="card-body">
-
-                    <h4 className="mb-3">🏨 Nearby Hotels</h4>
-
-                    {hotels.length === 0 ? (
-
-                      <p>No hotels found.</p>
-
-                    ) : (
-
-                      hotels.slice(0, 5).map((hotel) => (
-
-                        <div
-                          key={hotel.id}
-                          className="card mb-3 border-0 shadow-sm"
-                        >
-
-                          <div className="card-body">
-
-                            <h5>🏨 {hotel.name}</h5>
-
-                            <p className="text-muted mb-1">
-                              📍 {hotel.address}
-                            </p>
-                            <p>
-                              📏{" "}
-                              {hotel.distance < 1000
-                                ? `${hotel.distance} m away`
-                                : `${(hotel.distance / 1000).toFixed(2)} km away`}
-                            </p>
-                             <button
-                      className="btn btn-success btn-sm mt-3"
-                      onClick={() => {
-                        console.log("Hotel Clicked:", hotel);
-
-                        setSelectedHotel({
-                          lat: hotel.lat,
-                          lon: hotel.lon,
-                          name: hotel.name,
-                        });
-                      }}
-                    >
-                      📍 View on Map
-                    </button>
-
-
+                      <div className="col-md-6">
+                        <div className="card shadow">
+                          <div className="card-body text-center">
+                            <h5>📏 Distance</h5>
+                            <h3>{routeInfo.distance || "--"}</h3>
                           </div>
-
                         </div>
+                      </div>
 
-                      ))
+                      <div className="col-md-6">
+                        <div className="card shadow">
+                          <div className="card-body text-center">
+                            <h5>⏱ Estimated Time</h5>
+                            <h3>{routeInfo.time || "--"}</h3>
+                          </div>
+                        </div>
+                      </div>
 
-                    )}
-                  </div>
-                </div>
-                <div className="card shadow mt-4">
-  <div className="card-body">
+                    </div>
+                  </>
+                )}
+                  {activeFeature === "weather" && weather && (
 
-    <h4 className="mb-3">🍽 Nearby Restaurants</h4>
+                    <div className="card shadow-lg border-0 mt-4">
 
-    {restaurants.length === 0 ? (
+                    <div className="card-body">
 
-      <p>No restaurants found.</p>
+                    <div className="text-center">
 
-    ) : (
+                    <div className="weather-main-icon">
 
-      restaurants.slice(0,5).map((restaurant) => (
+                    {getWeatherIcon(weather.weather_code)}
 
-        <div
-          key={restaurant.id}
-          className="card mb-3 border-0 shadow-sm"
-        >
+                    </div>
 
-          <div className="card-body">
+                    <h1 className="fw-bold weather-value">
 
-            <h5>🍽 {restaurant.name}</h5>
+                    {weather.temperature_2m}°C
 
-            <p className="text-muted">
-              📍 {restaurant.address}
-            </p>
+                    </h1>
 
-            <p>
-              📏{" "}
-              {restaurant.distance < 1000
-                ? `${restaurant.distance} m away`
-                : `${(restaurant.distance / 1000).toFixed(2)} km away`}
-            </p>
+                    <p className="text-muted">
+
+                    Current Weather at Destination
+
+                    </p>
+
+                    </div>
+
+                    <hr/>
+
+                    <div className="row text-center g-3">
+
+                    <div className="col-12 col-sm-6 col-lg-3">
+
+                    <div className="card shadow-sm h-100">
+
+                    <div className="card-body">
+
+                    <h1>💧</h1>
+
+                    <h6>Humidity</h6>
+
+                    <h5>
+
+                    {weather.relative_humidity_2m}%
+
+                    </h5>
+
+                    </div>
+
+                    </div>
+
+                    </div>
+
+                    <div className="col-12 col-sm-6 col-lg-3">
+
+                    <div className="card shadow-sm h-100">
+
+                    <div className="card-body">
+
+                    <h1>💨</h1>
+
+                    <h6>Wind</h6>
+
+                    <h5>
+
+                    {weather.wind_speed_10m} km/h
+
+                    </h5>
+
+                    </div>
+
+                    </div>
+
+                    </div>
+
+                    <div className="col-12 col-sm-6 col-lg-3">
+
+                    <div className="card shadow-sm h-100">
+
+                    <div className="card-body">
+
+                    <h1>🌡️</h1>
+
+                    <h6>Feels Like</h6>
+
+                    <h5>
+
+                    {weather.apparent_temperature}°C
+
+                    </h5>
+
+                    </div>
+
+                    </div>
+
+                    </div>
+
+                    <div className="col-12 col-sm-6 col-lg-3">
+
+                    <div className="card shadow-sm h-100">
+
+                    <div className="card-body">
+
+                    <h1>🌧️</h1>
+
+                    <h6>Rain</h6>
+
+                    <h5>
+
+                    {weather.precipitation} mm
+
+                    </h5>
+
+                    </div>
+
+                    </div>
+
+                    </div>
+
+                    </div>
+
+                    <hr/>
+
+                    <div className="alert alert-success mt-4">
+
+                    <h5>
+
+                    🧳 Travel Recommendation
+
+                    </h5>
+
+                    <p className="mb-1">
+
+                    {weather.temperature_2m > 35
+                    ? "🥵 Very hot. Carry plenty of water and sunscreen."
+                    : weather.temperature_2m > 28
+                    ? "☀️ Great weather for sightseeing."
+                    : weather.temperature_2m > 20
+                    ? "🌤 Pleasant weather for outdoor activities."
+                    : "🧥 Carry a light jacket."}
+
+                    </p>
+
+                    </div>
+
+                    </div>
+
+                    </div>
+
+                    )} 
+                {activeFeature === "ai" && (
+                <AIPlanner
+                  source={source}
+                  destination={destination}
+                  startDate={startDate}
+                  endDate={endDate}
+                  budget={budget}
+                  travelers={travelers}
+                  travelMode={travelMode}
+                  tripType={tripType}
+                />
+              )}    
+
+            </div>
 
           </div>
 
         </div>
-
-      ))
-
-    )}
-
-  </div>
-</div>      
-
-                </div>
-
-          </div>
-
-        </div>
-
-      </div>
     );
   }
 

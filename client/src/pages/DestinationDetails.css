@@ -1,0 +1,59 @@
+.details-container{
+
+    max-width:1200px;
+
+    margin:auto;
+
+    padding:40px;
+
+}
+
+.hero-image{
+
+    width:100%;
+
+    height:500px;
+
+    object-fit:cover;
+
+    border-radius:20px;
+
+}
+
+.details-content{
+
+    margin-top:30px;
+
+}
+
+.details-content h1{
+
+    font-size:48px;
+
+}
+
+.details-content p{
+
+    margin-top:20px;
+
+    line-height:1.8;
+
+}
+
+.details-content button{
+
+    margin-top:30px;
+
+    padding:15px 28px;
+
+    border:none;
+
+    background:#0d6efd;
+
+    color:white;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+}

@@ -1,15 +1,15 @@
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import AppRoutes from "./AppRoutes";
+  import Navbar from "./components/Navbar";
+  import Footer from "./components/Footer";
+  import AppRoutes from "./AppRoutes";
 
-function App() {
-  return (
-    <>
-      <Navbar />
-      <AppRoutes />
-      <Footer />
-    </>
-  );
-}
+  function App() {
+    return (
+      <>
+        <Navbar />
+        <AppRoutes />
+        <Footer />
+      </>
+    );
+  }
 
-export default App;
+  export default App;

@@ -1,89 +1,84 @@
 import { useNavigate } from "react-router-dom";
-import DashboardCard from "../components/DashboardCard";
+import { useMemo } from "react";
+import "./Dashboard.css";
+
+import goa from "../assets/images/dashboard/goa.jpg";
+import kerala from "../assets/images/dashboard/kerala.jpg";
+import ooty from "../assets/images/dashboard/ooty.jpg";
+import manali from "../assets/images/dashboard/manali.jpg";
+import kashmir from "../assets/images/dashboard/kashmir.jpg";
+import jaipur from "../assets/images/dashboard/jaipur.jpg";
+import italy from "../assets/images/dashboard/italy.jpg";
+import paris from "../assets/images/dashboard/paris.jpg";
+import us from "../assets/images/dashboard/us.jpg";
+import varanasi from "../assets/images/dashboard/varanasi.jpg";
+import greenland from "../assets/images/dashboard/greenland.jpg";
+import switzerland from "../assets/images/dashboard/switzerland.jpg";
+import rome from "../assets/images/dashboard/rome.jpg";
+import germany from "../assets/images/dashboard/germany.jpg";
 
 function Dashboard() {
-
   const navigate = useNavigate();
 
-  // Get logged-in user from Local Storage
   const user = JSON.parse(localStorage.getItem("user"));
 
-  // Logout Function
-  const handleLogout = () => {
+  const images = [
+    goa,
+    kerala,
+    ooty,
+    manali,
+    kashmir,
+    jaipur,
+    italy,
+    paris,
+    us,
+    varanasi,
+    greenland,
+    switzerland,
+    rome,
+    germany
+  ];
 
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-
-    alert("Logged Out Successfully!");
-
-    navigate("/login");
-  };
+  // Random image on every page load
+  const backgroundImage = useMemo(() => {
+    return images[Math.floor(Math.random() * images.length)];
+  }, []);
 
   return (
-    <div className="container py-5">
+    <div
+      className="dashboard"
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+      }}
+    >
+      <div className="overlay">
 
-      {/* Welcome Section */}
-      <h2 className="mb-4">
-        Welcome back, {user?.fullName} 👋
-      </h2>
+        <div className="hero-content">
 
-      {/* Dashboard Cards */}
-      <div className="row">
+          <h5 className="welcome">
+            Welcome Back, {user?.fullName} 👋
+          </h5>
 
-        <DashboardCard
-          title="Create New Trip"
-          icon="✈️"
-          color="primary"
-          onClick={() => navigate("/trip-planner")}
-        />
+          <h1 className="title">
+            Discover Your Next Adventure
+          </h1>
 
-        <DashboardCard
-          title="My Trips"
-          icon="📋"
-          color="success"
-          onClick={() => navigate("/trip-history")}
-        />
-
-        <DashboardCard
-          title="Expense Tracker"
-          icon="💰"
-          color="warning"
-          onClick={() => navigate("/expense-tracker")}
-        />
-
-        <DashboardCard
-          title="Profile"
-          icon="👤"
-          color="info"
-          onClick={() => navigate("/profile")}
-        />
-
-        <DashboardCard
-          title="Logout"
-          icon="🚪"
-          color="danger"
-          onClick={handleLogout}
-        />
-
-      </div>
-
-      {/* Recent Trips Section */}
-      <div className="card shadow mt-4">
-
-        <div className="card-body">
-
-          <h3>Recent Trips</h3>
-
-          <hr />
-
-          <p className="text-muted">
-            No trips yet. Start by creating your first trip!
+          <p className="subtitle">
+            Plan smarter with AI-powered itineraries,
+            live weather updates, maps, hotels,
+            restaurants and personalized travel suggestions.
           </p>
+
+          <button
+            className="plan-btn"
+            onClick={() => navigate("/trip-planner")}
+          >
+            ✈️ Plan Your Trip
+          </button>
 
         </div>
 
       </div>
-
     </div>
   );
 }

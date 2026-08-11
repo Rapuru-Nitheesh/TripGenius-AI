@@ -1,72 +1,88 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet-routing-machine";
 
 function Routing({ source, destination, setRouteInfo }) {
+
   const map = useMap();
+  const routingRef = useRef(null);
 
   useEffect(() => {
+
     if (!source || !destination) return;
 
-    const routingControl = L.Routing.control({
+    // Remove previous route
+    if (routingRef.current) {
+      try {
+        map.removeControl(routingRef.current);
+      } catch (e) {}
+    }
 
-  waypoints: [
-    L.latLng(source[0], source[1]),
-    L.latLng(destination[0], destination[1]),
-  ],
+    routingRef.current = L.Routing.control({
 
-  createMarker: () => null,
+      waypoints: [
+        L.latLng(source[0], source[1]),
+        L.latLng(destination[0], destination[1]),
+      ],
 
-  lineOptions: {
-    styles: [
-      {
-        color: "#1976d2",
-        weight: 6,
-        opacity: 0.9,
+      createMarker: () => null,
+
+      lineOptions: {
+        styles: [
+          {
+            color: "#1976d2",
+            weight: 6,
+            opacity: 0.9,
+          },
+        ],
       },
-    ],
-  },
 
-  routeWhileDragging: false,
-  addWaypoints: false,
-  draggableWaypoints: false,
-  fitSelectedRoutes: true,
-  show: false,
+      routeWhileDragging: false,
+      addWaypoints: false,
+      draggableWaypoints: false,
+      fitSelectedRoutes: true,
+      show: false,
 
-}).addTo(map);
+    }).addTo(map);
 
-    routingControl.on("routesfound", function (e) {
+    routingRef.current.on("routesfound", (e) => {
+
       const route = e.routes[0];
 
       const distance = (
         route.summary.totalDistance / 1000
       ).toFixed(2);
 
-      const totalMinutes = Math.round(route.summary.totalTime / 60);
+      const totalMinutes = Math.round(
+        route.summary.totalTime / 60
+      );
 
-const hours = Math.floor(totalMinutes / 60);
+      const hours = Math.floor(totalMinutes / 60);
+      const minutes = totalMinutes % 60;
 
-const minutes = totalMinutes % 60;
-
-const time =
-  hours > 0
-    ? `${hours} hr ${minutes} min`
-    : `${minutes} min`;
-
-      console.log("Distance:", distance);
-      console.log("Time:", time);
+      const time =
+        hours > 0
+          ? `${hours} hr ${minutes} min`
+          : `${minutes} min`;
 
       setRouteInfo({
         distance,
         time,
       });
+
     });
 
     return () => {
-      map.removeControl(routingControl);
+      try {
+        if (routingRef.current) {
+          map.removeControl(routingRef.current);
+          routingRef.current = null;
+        }
+      } catch (e) {}
     };
-  }, [source, destination, map, setRouteInfo]);
+
+  }, [source, destination]);
 
   return null;
 }

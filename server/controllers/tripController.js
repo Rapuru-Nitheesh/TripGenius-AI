@@ -1,5 +1,10 @@
 const tripModel = require("../models/tripModel");
 
+
+// ========================================
+// CREATE TRIP
+// ========================================
+
 const createTrip = async (req, res) => {
   try {
 
@@ -16,6 +21,23 @@ const createTrip = async (req, res) => {
       tripType,
     } = req.body;
 
+
+    // Date validation
+    if (!startDate || !endDate) {
+      return res.status(400).json({
+        message: "Start date and end date are required.",
+      });
+    }
+
+
+    if (new Date(endDate) < new Date(startDate)) {
+      return res.status(400).json({
+        message:
+          "End date must be on or after the start date.",
+      });
+    }
+
+
     const trip = await tripModel.createTrip(
       userId,
       tripName,
@@ -28,6 +50,7 @@ const createTrip = async (req, res) => {
       travelMode,
       tripType
     );
+
 
     res.status(201).json({
       message: "Trip Created Successfully",
@@ -44,15 +67,71 @@ const createTrip = async (req, res) => {
 
   }
 };
+
+
+// ========================================
+// GET USER TRIPS
+// ========================================
+
 const getTripsByUser = async (req, res) => {
 
   try {
 
     const { userId } = req.params;
 
-    const trips = await tripModel.getTripsByUser(userId);
+    const trips =
+      await tripModel.getTripsByUser(userId);
 
-    res.status(200).json(trips);
+
+    // Calculate dynamic status
+    const today = new Date();
+
+    today.setHours(0, 0, 0, 0);
+
+
+    const updatedTrips = trips.map((trip) => {
+
+      const startDate =
+        new Date(trip.start_date);
+
+      const endDate =
+        new Date(trip.end_date);
+
+
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(0, 0, 0, 0);
+
+
+      let status;
+
+
+      if (today < startDate) {
+
+        status = "Upcoming";
+
+      } else if (
+        today >= startDate &&
+        today <= endDate
+      ) {
+
+        status = "Started";
+
+      } else {
+
+        status = "Ended";
+
+      }
+
+
+      return {
+        ...trip,
+        status,
+      };
+
+    });
+
+
+    res.status(200).json(updatedTrips);
 
   } catch (error) {
 
@@ -65,6 +144,12 @@ const getTripsByUser = async (req, res) => {
   }
 
 };
+
+
+// ========================================
+// UPDATE TRIP
+// ========================================
+
 const updateTrip = async (req, res) => {
 
   try {
@@ -83,18 +168,51 @@ const updateTrip = async (req, res) => {
       tripType,
     } = req.body;
 
-    const trip = await tripModel.updateTrip(
-      id,
-      tripName,
-      source,
-      destination,
-      startDate,
-      endDate,
-      budget,
-      travelers,
-      travelMode,
-      tripType
-    );
+
+    // Date validation for EDIT
+    if (!startDate || !endDate) {
+
+      return res.status(400).json({
+        message:
+          "Start date and end date are required.",
+      });
+
+    }
+
+
+    if (new Date(endDate) < new Date(startDate)) {
+
+      return res.status(400).json({
+        message:
+          "End date must be on or after the start date.",
+      });
+
+    }
+
+
+    const trip =
+      await tripModel.updateTrip(
+        id,
+        tripName,
+        source,
+        destination,
+        startDate,
+        endDate,
+        budget,
+        travelers,
+        travelMode,
+        tripType
+      );
+
+
+    if (!trip) {
+
+      return res.status(404).json({
+        message: "Trip not found.",
+      });
+
+    }
+
 
     res.status(200).json({
       message: "Trip Updated Successfully",
@@ -112,13 +230,21 @@ const updateTrip = async (req, res) => {
   }
 
 };
+
+
+// ========================================
+// DELETE TRIP
+// ========================================
+
 const deleteTrip = async (req, res) => {
 
   try {
 
     const { id } = req.params;
 
-    const trip = await tripModel.deleteTrip(id);
+    const trip =
+      await tripModel.deleteTrip(id);
+
 
     res.status(200).json({
       message: "Trip Deleted Successfully",
@@ -136,6 +262,7 @@ const deleteTrip = async (req, res) => {
   }
 
 };
+
 
 module.exports = {
   createTrip,

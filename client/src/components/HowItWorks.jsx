@@ -1,12 +1,14 @@
+import "./HowItWorks.css";
+
 function HowItWorks() {
-
   return (
-
-    <section className="bg-light py-5">
+    <section className="how-it-works-section">
 
       <div className="container">
 
-        <div className="text-center mb-5">
+        {/* Heading */}
+
+        <div className="text-center how-it-works-heading">
 
           <h2 className="fw-bold">
             How It Works
@@ -14,41 +16,76 @@ function HowItWorks() {
 
         </div>
 
-        <div className="row text-center">
 
-          <div className="col-md-4">
+        {/* Steps */}
 
-            <h1>📍</h1>
+        <div className="row text-center g-4">
 
-            <h4>Select Destination</h4>
+          {/* Step 1 */}
 
-            <p>
-              Choose where you want to travel.
-            </p>
+          <div className="col-12 col-md-4">
+
+            <div className="how-step">
+
+              <div className="how-icon">
+                📍
+              </div>
+
+              <h4>
+                Select Destination
+              </h4>
+
+              <p>
+                Choose where you want to travel.
+              </p>
+
+            </div>
 
           </div>
 
-          <div className="col-md-4">
 
-            <h1>🤖</h1>
+          {/* Step 2 */}
 
-            <h4>AI Creates Plan</h4>
+          <div className="col-12 col-md-4">
 
-            <p>
-              Receive an intelligent day-wise itinerary.
-            </p>
+            <div className="how-step">
+
+              <div className="how-icon">
+                🤖
+              </div>
+
+              <h4>
+                AI Creates Plan
+              </h4>
+
+              <p>
+                Receive an intelligent day-wise itinerary.
+              </p>
+
+            </div>
 
           </div>
 
-          <div className="col-md-4">
 
-            <h1>✈️</h1>
+          {/* Step 3 */}
 
-            <h4>Enjoy Your Trip</h4>
+          <div className="col-12 col-md-4">
 
-            <p>
-              Travel with confidence using TripGenius AI.
-            </p>
+            <div className="how-step">
+
+              <div className="how-icon">
+                ✈️
+              </div>
+
+              <h4>
+                Enjoy Your Trip
+              </h4>
+
+              <p>
+                Travel with confidence using TripGenius AI.
+              </p>
+
+            </div>
 
           </div>
 
@@ -57,9 +94,7 @@ function HowItWorks() {
       </div>
 
     </section>
-
   );
-
 }
 
 export default HowItWorks;

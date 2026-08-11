@@ -1,6 +1,5 @@
 import greenMarker from "../assets/icons/marker-green.png";
 import redMarker from "../assets/icons/marker-red.png";
-import markerShadow from "../assets/icons/marker-shadow.png";
 import hotelIconImg from "../assets/icons/hotel.png";
 import restaurantIconImg from "../assets/icons/restaurant.png";
 import touristIconImg from "../assets/icons/tourist.png";
@@ -18,7 +17,6 @@ import Routing from "./Routing";
 import L from "leaflet";
 const sourceIcon = new L.Icon({
   iconUrl: greenMarker,
-  shadowUrl: markerShadow,
 
   iconSize: [25, 41],
   iconAnchor: [12, 41],
@@ -27,7 +25,6 @@ const sourceIcon = new L.Icon({
 
 const destinationIcon = new L.Icon({
   iconUrl: redMarker,
-  shadowUrl: markerShadow,
 
   iconSize: [25, 41],
   iconAnchor: [12, 41],
@@ -59,7 +56,7 @@ function ChangeView({ center }) {
 
   useEffect(() => {
     if (center) {
-      map.setView(center, 16, {
+      map.panTo(center, {
         animate: true,
       });
     }
@@ -67,13 +64,36 @@ function ChangeView({ center }) {
 
   return null;
 }
+function FitBounds({ sourceCoords, destinationCoords }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (sourceCoords && destinationCoords) {
+      const bounds = L.latLngBounds([
+        sourceCoords,
+        destinationCoords,
+      ]);
+
+      map.fitBounds(bounds, {
+        padding: [60, 60],
+        animate: true,
+      });
+    }
+  }, [sourceCoords, destinationCoords, map]);
+
+  return null;
+}
 
 function MapComponent({
-  center,
+   center,
   sourceCoords,
   destinationCoords,
   setRouteInfo,
+
   selectedHotel,
+  selectedRestaurant,
+  selectedTourist,
+
   hotels,
   restaurants,
   tourists,
@@ -92,12 +112,20 @@ function MapComponent({
         attribution="&copy; OpenStreetMap contributors"
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <ChangeView
-  center={
-    selectedHotel
-      ? [selectedHotel.lat, selectedHotel.lon]
-      : center
-  }
+     <ChangeView
+    center={
+        selectedHotel
+            ? [selectedHotel.lat, selectedHotel.lon]
+            : selectedRestaurant
+            ? [selectedRestaurant.lat, selectedRestaurant.lon]
+            : selectedTourist
+            ? [selectedTourist.lat, selectedTourist.lon]
+            : center
+    }
+/>
+<FitBounds
+  sourceCoords={sourceCoords}
+  destinationCoords={destinationCoords}
 />
 
       {sourceCoords && (

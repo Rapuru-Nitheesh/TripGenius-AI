@@ -1,0 +1,247 @@
+/* =========================================
+   TOP NAVIGATION
+========================================= */
+
+.top-navigation-card {
+    width: 100%;
+    overflow: visible;
+}
+
+.top-navigation-body {
+    padding: 15px 20px;
+}
+
+
+/* =========================================
+   MAIN LAYOUT
+========================================= */
+
+.top-navigation-layout {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+
+/* =========================================
+   NAVIGATION BUTTONS
+========================================= */
+
+.top-navigation-buttons {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
+
+    min-width: 0;
+}
+
+.top-navigation-buttons .btn {
+    white-space: nowrap;
+
+    font-size: 0.95rem;
+
+    padding: 8px 14px;
+}
+
+
+/* =========================================
+   CLOSE BUTTON
+========================================= */
+
+.top-navigation-close {
+    flex-shrink: 0;
+}
+
+.close-trip-btn {
+    width: 42px;
+
+    height: 42px;
+
+    padding: 0;
+
+    font-size: 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+
+/* =========================================
+   LAPTOP
+========================================= */
+
+@media (max-width: 1199px) {
+
+    .top-navigation-body {
+        padding: 14px 16px;
+    }
+
+    .top-navigation-buttons {
+        gap: 9px;
+    }
+
+    .top-navigation-buttons .btn {
+        font-size: 0.9rem;
+
+        padding: 7px 12px;
+    }
+
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 991px) {
+
+    .top-navigation-layout {
+        align-items: flex-start;
+    }
+
+    .top-navigation-buttons {
+        flex: 1;
+    }
+
+    .top-navigation-buttons .btn {
+        font-size: 0.88rem;
+
+        padding: 7px 11px;
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+
+    .top-navigation-body {
+        padding: 12px;
+    }
+
+    .top-navigation-layout {
+        align-items: flex-start;
+
+        gap: 10px;
+    }
+
+    .top-navigation-buttons {
+        width: 100%;
+
+        gap: 7px;
+    }
+
+    .top-navigation-buttons .btn {
+        font-size: 0.82rem;
+
+        padding: 7px 9px;
+    }
+
+    .close-trip-btn {
+        width: 38px;
+
+        height: 38px;
+
+        font-size: 16px;
+    }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 575px) {
+
+    .top-navigation-layout {
+        display: flex;
+
+        align-items: flex-start;
+    }
+
+    .top-navigation-buttons {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        width: 100%;
+
+        gap: 7px;
+    }
+
+    .top-navigation-buttons .btn {
+        width: 100%;
+
+        font-size: 0.8rem;
+
+        padding: 8px 5px;
+    }
+
+    /*
+       Keep close button at the top-right.
+    */
+
+    .top-navigation-close {
+        position: absolute;
+
+        top: 10px;
+
+        right: 10px;
+    }
+
+    .top-navigation-card {
+        position: relative;
+    }
+
+}
+
+
+/* =========================================
+   VERY SMALL MOBILE
+========================================= */
+
+@media (max-width: 400px) {
+
+    .top-navigation-body {
+        padding: 10px;
+    }
+
+    .top-navigation-buttons {
+        gap: 6px;
+
+        padding-right: 42px;
+    }
+
+    .top-navigation-buttons .btn {
+        font-size: 0.74rem;
+
+        padding: 7px 4px;
+    }
+
+    .close-trip-btn {
+        width: 34px;
+
+        height: 34px;
+
+        font-size: 14px;
+    }
+
+}

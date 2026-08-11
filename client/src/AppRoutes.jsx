@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import PublicRoute from "./components/PublicRoute";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -12,13 +13,39 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Explore from "./pages/Explore";
+import DestinationDetails from "./pages/DestinationDetails";
+import TripLive from "./pages/TripLive";
 
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route
+        path="/"
+        element={
+          <PublicRoute>
+            <Home />
+          </PublicRoute>
+        }
+      />
+
+      <Route
+        path="/login"
+        element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        }
+      />
+
+      <Route
+        path="/register"
+        element={
+          <PublicRoute>
+            <Register />
+          </PublicRoute>
+        }
+      />
       <Route
         path="/dashboard"
         element={
@@ -59,11 +86,38 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/explore"
+        element={
+            <ProtectedRoute>
+                <Explore />
+            </ProtectedRoute>
+        }
+    />
+    <Route
+
+path="/destination"
+
+element={
+
+<ProtectedRoute>
+
+<DestinationDetails/>
+
+</ProtectedRoute>
+
+}
+
+/>
 
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
 
       <Route path="*" element={<NotFound />} />
+      <Route
+          path="/trip-live"
+          element={<TripLive />}
+      />
     </Routes>
   );
 }
