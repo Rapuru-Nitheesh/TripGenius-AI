@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api/auth",
+  baseURL: "https://tripgenius-ai-backend-29n7.onrender.com/api/auth",
 });
 
 export const registerUser = (userData) => {
