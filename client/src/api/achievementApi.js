@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:5000/api/achievements";
+const API = "https://tripgenius-ai-backend-29n7.onrender.com/api/achievements";
 
 export const getAchievements = (userId) =>
   axios.get(`${API}/${userId}`);

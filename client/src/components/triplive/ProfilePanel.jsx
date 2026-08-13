@@ -91,7 +91,7 @@ function ProfilePanel({ fullPage = false }) {
     const imageUrl = storedPicture
       ? storedPicture.startsWith("http")
         ? storedPicture
-        : `http://localhost:5000${storedPicture}`
+        : `https://tripgenius-ai-backend-29n7.onrender.com${storedPicture}`
       : defaultProfileImage;
 
     setProfilePicture(imageUrl);
@@ -176,7 +176,7 @@ function ProfilePanel({ fullPage = false }) {
     // /uploads/profiles/filename.jpg
 
     const imageUrl =
-      `http://localhost:5000${res.data.profilePicture}`;
+      `https://tripgenius-ai-backend-29n7.onrender.com${res.data.profilePicture}`;
 
 
     // Save permanent URL in state

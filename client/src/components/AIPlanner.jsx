@@ -50,7 +50,7 @@ function AIPlanner({
       setLoading(true);
 
       const res = await axios.post(
-        "http://localhost:5000/api/ai/itinerary",
+        "https://tripgenius-ai-backend-29n7.onrender.com/api/ai/itinerary",
         {
           source,
           destination,

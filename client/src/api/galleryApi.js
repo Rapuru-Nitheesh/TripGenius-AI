@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:5000/api/gallery";
+const API = "https://tripgenius-ai-backend-29n7.onrender.com/api/gallery";
 
 // Get Gallery
 export const getGallery = (userId) =>
