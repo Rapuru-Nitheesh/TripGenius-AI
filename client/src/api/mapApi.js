@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getCoordinates = async (place) => {
   const response = await axios.get(
-    "https://tripgenius-ai-backend-29n7.onrender.com/api/location/search",
+    "http://https://tripgenius-ai-backend-29n7.onrender.com/api/location/search",
     {
       params: {
         q: place,

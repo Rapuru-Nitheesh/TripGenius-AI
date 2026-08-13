@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_URL =
-  "https://tripgenius-ai-backend-29n7.onrender.com/api/expenses";
+  "http://https://tripgenius-ai-backend-29n7.onrender.com/api/expenses";
 
 
 // ========================================

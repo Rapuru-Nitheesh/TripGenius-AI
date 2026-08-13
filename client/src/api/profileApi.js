@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://tripgenius-ai-backend-29n7.onrender.com/api/profile";
+const API_URL = "http://https://tripgenius-ai-backend-29n7.onrender.com/api/profile";
 
 
 // ==========================================
@@ -61,7 +61,7 @@ export const uploadProfilePicture = (
   );
 
   return axios.post(
-    `https://tripgenius-ai-backend-29n7.onrender.com/api/profile-upload/${userId}`,
+    `http://https://tripgenius-ai-backend-29n7.onrender.com/api/profile-upload/${userId}`,
     formData
   );
 };

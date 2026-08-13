@@ -54,7 +54,7 @@ const addImage = async (req, res) => {
     }
 
     const imageUrl =
-      `http://localhost:5000/uploads/${req.file.filename}`;
+  `https://tripgenius-ai-backend-29n7.onrender.com/uploads/${req.file.filename}`;
 
     const image = await galleryModel.addImage(
       userId,

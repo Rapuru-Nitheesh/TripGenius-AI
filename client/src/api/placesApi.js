@@ -3,7 +3,7 @@ import axios from "axios";
 export const getNearbyPlaces = async (lat, lon, type) => {
 
     const response = await axios.get(
-        "https://tripgenius-ai-backend-29n7.onrender.com/api/places",
+        "http://https://tripgenius-ai-backend-29n7.onrender.com/api/places",
         {
             params: {
                 lat,
