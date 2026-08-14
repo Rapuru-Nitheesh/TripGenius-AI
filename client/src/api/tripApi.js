@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://https://tripgenius-ai-backend-29n7.onrender.com/api/trips",
+  baseURL: "https://tripgenius-ai-backend-29n7.onrender.com/api/trips",
 });
 
 export const createTrip = (tripData) => {
